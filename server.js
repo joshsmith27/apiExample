@@ -10,38 +10,41 @@ app.use(bodyParser.json())
 let todos = [{id: 0, todo:`Teach Jonah Crud and rest!`, completed:false}];
 let id = 1;
 
-app.get('/api/todo', (req,res,next)=>{
+app.get('/api/todo', (request,response,next)=>{
     console.log(`sent todos`)
-    res.send(todos)
+    response.send(todos)
 })
-app.post('/api/todo', (req,res,next)=>{
-    req.body.id = id
+
+app.post('/api/todo', (request,response,next)=>{
+    request.body.id = id
     id++;
-    req.body.completed = false;
-    todos.push(req.body)
+    request.body.completed = false;
+    todos.push(request.body)
     console.log(`added todo`)
-    res.send(todos)
+    response.send(todos)
 })
-app.put('/api/todo', (req,res,next)=>{
+
+app.put('/api/todo', (request,response,next)=>{
     todos = todos.map((e)=>{
-        if(req.body.id === e.id){
+        if(request.body.id === e.id){
             e.completed = true;
         }
         return e;
     })
     console.log(`completed todo`)
-    res.send(todos)
+    response.send(todos)
 })
-app.delete('/api/todo/:id', (req,res,next)=>{
+
+app.delete('/api/todo/:id', (request,response,next)=>{
 
     todos= todos.filter((e)=>{
-        return e.id !== Number(req.params.id);
+        return e.id !== Number(request.params.id);
     })
     console.log(`deleted todo`)
-    res.send(todos)
+    response.send(todos)
 })
 
-const port = process.env.PORT || 8050
+const port = process.env.PORT || 8080
 app.listen(port, ()=>{
     console.log(`Running on port ${port}`)
 })
